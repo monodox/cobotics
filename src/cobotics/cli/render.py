@@ -14,8 +14,8 @@ console = Console()
 def banner() -> None:
     console.print(
         Panel.fit(
-            "[bold cyan]cobotics[/bold cyan]  "
-            "[dim]Physical AI Intelligence shell[/dim]\n"
+            "[bold cyan]Cobotics[/bold cyan]  "
+            "[dim]Physical AI Intelligence[/dim]\n"
             "Type [bold]/help[/bold] for commands, or just talk. "
             "[bold]/exit[/bold] to quit.",
             border_style="cyan",

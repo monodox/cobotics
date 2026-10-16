@@ -1,13 +1,15 @@
-# cobotics
+# Cobotics
 
 Interactive CLI for a **Physical AI Intelligence** system — reasoning over robots,
 sensors, and actuators, with a built-in simulator so it runs with no real hardware.
 
 Open source under the [MIT License](LICENSE).
 
+Repository: https://github.com/monodox/cobotics
+
 ## Features
 
-- Interactive hybrid shell: slash-commands (`/help`, `/status`, `/move`) **and** natural language.
+- Hybrid command interface: slash-commands (`/help`, `/status`, `/move`) **and** natural language.
 - Hardware abstraction layer (sensors / actuators) with a swappable simulator backend.
 - Pluggable AI backend (stub by default; **Nebius Token Factory / NVIDIA Nemotron**, OpenAI, and Anthropic optional).
 - Config- and env-driven via `pydantic-settings`.
@@ -33,12 +35,12 @@ pip install -e ".[dev]"        # tests
 ## Run
 
 ```bash
-cobotics            # launch the interactive shell
+cobotics            # launch cobotics
 # or without installing:
 python -m cobotics
 ```
 
-## Shell commands
+## Commands
 
 | Command            | Description                              |
 | ------------------ | ---------------------------------------- |
@@ -48,20 +50,20 @@ python -m cobotics
 | `/move <x> <y>`    | Move the robot to a target position      |
 | `/grip open\|close`| Operate the gripper                      |
 | `/reset`           | Reset the simulator                      |
-| `/exit`, `/quit`   | Leave the shell                          |
+| `/exit`, `/quit`   | Exit cobotics                            |
 
 Anything that is not a slash-command is treated as natural language and routed to
 the AI agent.
 
 ## AI backends
 
-cobotics runs offline by default with a deterministic `stub` backend, so the
-shell and simulator work with no API key or network. Natural-language turns are
+Cobotics runs offline by default with a deterministic `stub` backend, so the
+simulator works with no API key or network. Natural-language turns are
 routed to whichever backend is configured.
 
 ### Nebius Token Factory (NVIDIA Nemotron)
 
-cobotics can drive its reasoning with an **NVIDIA Nemotron** open-source model
+Cobotics can drive its reasoning with an **NVIDIA Nemotron** open-source model
 served by **Nebius Token Factory**. Token Factory exposes an OpenAI-compatible
 chat completions API, so the `nebius` backend reaches it through the OpenAI SDK
 pointed at the Nebius base URL.
@@ -79,7 +81,7 @@ COBOTICS_AI_MODEL=nvidia/Llama-3_3-Nemotron-Super-49B-v1   # an NVIDIA Nemotron 
 COBOTICS_NEBIUS_BASE_URL=https://api.studio.nebius.com/v1/ # default
 ```
 
-Then launch the shell — natural-language input is answered by the Nemotron model
+Then launch Cobotics — natural-language input is answered by the Nemotron model
 with live sensor context injected by the perception pipeline. Adjust
 `COBOTICS_AI_MODEL` to whichever Nemotron model id Token Factory currently serves.
 
@@ -93,7 +95,7 @@ Install the matching extra (`.[openai]` or `.[anthropic]`), set
 
 ```
 src/cobotics/
-├── cli/          interactive shell + commands + rendering
+├── cli/          entry point + commands + rendering
 ├── core/         agent, intent parsing, session state
 ├── ai/           LLM backend interface + providers (stub/nebius/openai/anthropic)
 ├── hardware/     device/sensor/actuator abstractions + simulator
