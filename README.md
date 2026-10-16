@@ -7,6 +7,9 @@ Open source under the [MIT License](LICENSE).
 
 Repository: https://github.com/monodox/cobotics
 
+- Report a bug or request a feature: https://github.com/monodox/cobotics/issues/new
+- Ask questions and share ideas: https://github.com/monodox/cobotics/discussions
+
 ## Features
 
 - Hybrid command interface: slash-commands (`/help`, `/status`, `/move`) **and** natural language.

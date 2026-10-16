@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cobotics — Physical AI Intelligence CLI</title>
+  <meta name="description" content="Cobotics is an interactive CLI for a Physical AI Intelligence system — reasoning over robots, sensors, and actuators, with a built-in simulator and an NVIDIA Nemotron backend served by Nebius Token Factory." />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121a33;
+      --panel: #0f1730;
+      --fg: #e6ecff;
+      --muted: #9aa7c7;
+      --accent: #37d0c3;
+      --accent-2: #6ea8fe;
+      --border: #22305a;
+      --code-bg: #0a0f1f;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 70% -10%, #15224a 0%, var(--bg) 55%) no-repeat, var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+    header.hero {
+      padding: 90px 0 60px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: .04em;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      margin: 0 0 12px;
+      line-height: 1.1;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .tagline { font-size: 1.2rem; color: var(--muted); max-width: 640px; margin: 0 auto 30px; }
+
+    .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #06111f; border: none; }
+    .btn.primary:hover { text-decoration: none; opacity: .92; }
+    .btn.ghost { background: var(--panel); color: var(--fg); }
+    .btn.ghost:hover { text-decoration: none; border-color: var(--accent-2); }
+
+    section { padding: 40px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 1.6rem; margin: 0 0 18px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--fg); }
+    .card p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: .9rem;
+    }
+    code { font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; }
+    p code, li code { background: var(--bg-soft); padding: 2px 6px; border-radius: 6px; font-size: .88em; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: .95rem; }
+    th { color: var(--accent); font-weight: 600; }
+    td code { background: var(--bg-soft); padding: 2px 6px; border-radius: 6px; }
+
+    .stack { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pill { background: var(--bg-soft); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: .85rem; }
+
+    footer { padding: 40px 0 60px; color: var(--muted); font-size: .9rem; text-align: center; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent-2); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="badge">Physical AI Intelligence · open source</span>
+      <h1>Cobotics</h1>
+      <p class="tagline">
+        An interactive CLI that reasons over robots, sensors, and actuators —
+        with a built-in simulator so it runs with no real hardware, and an
+        NVIDIA Nemotron backend served by Nebius Token Factory.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/monodox/cobotics">View on GitHub</a>
+        <a class="btn ghost" href="#install">Get started</a>
+      </div>
+    </header>
+  </div>
+
+  <div class="wrap">
+    <section id="features">
+      <h2>What it does</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Hybrid command interface</h3>
+          <p>Slash-commands (<code>/move</code>, <code>/sensors</code>, <code>/grip</code>) and plain natural language in the same prompt.</p>
+        </div>
+        <div class="card">
+          <h3>Built-in simulator</h3>
+          <p>Position, battery, and range sensors plus drive and gripper actuators — no physical hardware required.</p>
+        </div>
+        <div class="card">
+          <h3>Nemotron reasoning</h3>
+          <p>Natural-language turns answered by an NVIDIA Nemotron model through Nebius Token Factory's OpenAI-compatible API.</p>
+        </div>
+        <div class="card">
+          <h3>Pluggable backends</h3>
+          <p>Offline <code>stub</code> by default; Nebius, OpenAI, and Anthropic are opt-in behind one interface.</p>
+        </div>
+        <div class="card">
+          <h3>Swappable hardware layer</h3>
+          <p>Clean <code>Sensor</code>/<code>Actuator</code> abstractions — drop in real drivers without touching the rest.</p>
+        </div>
+        <div class="card">
+          <h3>Config-driven</h3>
+          <p>Environment and <code>.env</code> via <code>pydantic-settings</code>, with sensible defaults.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <h2>Install</h2>
+      <pre><code>python -m venv .venv
+.venv\Scripts\activate        # Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -e .</code></pre>
+      <p>Optional backends: <code>pip install -e ".[nebius]"</code> (Nebius Token Factory + NVIDIA Nemotron), <code>".[openai]"</code>, <code>".[anthropic]"</code>, <code>".[dev]"</code> for tests.</p>
+    </section>
+
+    <section id="run">
+      <h2>Run</h2>
+      <pre><code>cobotics            # launch Cobotics
+# or without installing:
+python -m cobotics</code></pre>
+      <table>
+        <tr><th>Command</th><th>Description</th></tr>
+        <tr><td><code>/help</code></td><td>Show available commands</td></tr>
+        <tr><td><code>/status</code></td><td>Show registered devices and world state</td></tr>
+        <tr><td><code>/sensors</code></td><td>Read all sensors</td></tr>
+        <tr><td><code>/move &lt;x&gt; &lt;y&gt;</code></td><td>Move the robot to a target position</td></tr>
+        <tr><td><code>/grip open|close</code></td><td>Operate the gripper</td></tr>
+        <tr><td><code>/reset</code></td><td>Reset the simulator</td></tr>
+        <tr><td><code>/exit</code>, <code>/quit</code></td><td>Exit Cobotics</td></tr>
+      </table>
+      <p>Anything that isn't a slash-command is treated as natural language and routed to the AI agent.</p>
+    </section>
+
+    <section id="nemotron">
+      <h2>Nebius Token Factory (NVIDIA Nemotron)</h2>
+      <p>Point Cobotics at a Nemotron model served by Nebius Token Factory:</p>
+      <pre><code>COBOTICS_AI_BACKEND=nebius
+NEBIUS_API_KEY=your-token-factory-key
+COBOTICS_AI_MODEL=nvidia/Llama-3_3-Nemotron-Super-49B-v1
+COBOTICS_NEBIUS_BASE_URL=https://api.studio.nebius.com/v1/</code></pre>
+      <p>Token Factory exposes an OpenAI-compatible chat completions API, so the <code>nebius</code> backend reaches it through the OpenAI SDK with live sensor context injected by the perception pipeline.</p>
+    </section>
+
+    <section id="stack">
+      <h2>Built with</h2>
+      <div class="stack">
+        <span class="pill">Python 3.9+</span>
+        <span class="pill">typer</span>
+        <span class="pill">rich</span>
+        <span class="pill">prompt_toolkit</span>
+        <span class="pill">pydantic-settings</span>
+        <span class="pill">Nebius Token Factory</span>
+        <span class="pill">NVIDIA Nemotron</span>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <p>
+        Cobotics is open source under the
+        <a href="https://github.com/monodox/cobotics/blob/main/LICENSE">MIT License</a>.
+      </p>
+      <p>
+        <a href="https://github.com/monodox/cobotics">Repository</a> ·
+        <a href="https://github.com/monodox/cobotics/issues/new">Report a bug</a> ·
+        <a href="https://github.com/monodox/cobotics/discussions">Discussions</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

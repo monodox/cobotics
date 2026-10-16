@@ -13,6 +13,8 @@ env/
 
 # Env / secrets
 .env
+.env.local
+.env.*.local
 
 # Tooling
 .pytest_cache/
