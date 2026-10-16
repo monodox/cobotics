@@ -1,0 +1,19 @@
+# Runtime dependencies for Cobotics.
+# Mirrors the [project.dependencies] in pyproject.toml.
+# Preferred install is `pip install -e .`; this file is for convenience.
+
+typer>=0.12
+rich>=13.7
+prompt_toolkit>=3.0
+pydantic>=2.6
+pydantic-settings>=2.2
+pyyaml>=6.0
+
+# Optional AI backends (uncomment as needed):
+#   Nebius Token Factory (NVIDIA Nemotron) / OpenAI both use the OpenAI SDK.
+# openai>=1.30
+# anthropic>=0.25
+
+# Development / tests:
+# pytest>=8.0
+# pytest-cov>=5.0

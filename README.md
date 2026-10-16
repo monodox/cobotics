@@ -14,10 +14,10 @@ runs on sponsor infrastructure end to end:
   Every natural-language turn is answered by Nemotron with live sensor context.
 - **Nebius Token Factory** — serves Nemotron through an OpenAI-compatible
   inference API; the live agent makes its runtime calls here.
-- **Nebius Serverless Jobs** — the batch worker in the demo
-  ([`scripts/demo.py`](scripts/demo.py), option 2) processes simulated sensor
-  data at scale and can summarize the batch with Nemotron, the same model the
-  live agent uses. It runs locally and, unchanged, as a Serverless Job.
+- **Nebius Serverless Jobs** — batch sensor-data processing and policy
+  evaluation run at scale and can be summarized with Nemotron, the same model
+  the live agent uses. The batch worker runs locally and, unchanged, as a
+  Serverless Job.
 
 The full embodied loop is **SENSE → REASON → ACT**: the perception pipeline
 senses the world, the agent runtime reasons over it with NVIDIA Nemotron on
@@ -111,28 +111,6 @@ with live sensor context injected by the perception pipeline. Adjust
 Install the matching extra (`.[openai]` or `.[anthropic]`), set
 `COBOTICS_AI_BACKEND` to `openai` or `anthropic`, provide the matching API key
 (`OPENAI_API_KEY` / `ANTHROPIC_API_KEY`), and set `COBOTICS_AI_MODEL`.
-
-## Demo
-
-An interactive demo of the key application modules. Pick an option from the menu:
-
-```bash
-python scripts/demo.py              # interactive menu
-python scripts/demo.py --nebius     # reason with NVIDIA Nemotron via Nebius Token Factory
-python scripts/demo.py 1            # run option 1 directly (non-interactive)
-```
-
-| Option | What it shows                                                            |
-| ------ | ------------------------------------------------------------------------ |
-| 1      | Walkthrough: SENSE → REASON → ACT in one labelled pass                   |
-| 2      | Batch processing: many episodes, sensor data at scale (Serverless-Job style) |
-| 3      | Reasoning chat: a few natural-language turns through the agent runtime   |
-
-The batch worker (option 2) processes simulated sensor episodes at scale and can
-summarize the batch with **NVIDIA Nemotron on Nebius Token Factory**. The same
-worker runs unchanged as a **Nebius Serverless Job** — pass `NEBIUS_API_KEY` and
-`COBOTICS_AI_BACKEND=nebius` as job environment variables to enable the Nemotron
-summary step.
 
 ## Layout
 
