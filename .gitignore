@@ -16,6 +16,9 @@ env/
 .env.local
 .env.*.local
 
+# Demo / job output
+batch_report.json
+
 # Tooling
 .pytest_cache/
 .coverage
