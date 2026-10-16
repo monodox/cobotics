@@ -1,0 +1,17 @@
+# Default configuration for cobotics.
+# Values here are overridden by environment variables (COBOTICS_*) and .env.
+
+ai:
+  backend: stub          # stub | openai | anthropic
+  model: gpt-4o-mini
+
+hardware:
+  backend: simulator     # simulator | real
+
+simulator:
+  world_bounds: [10.0, 10.0]   # x, y extent of the simulated world
+  start_position: [0.0, 0.0]
+  move_speed: 1.0              # units per step
+
+logging:
+  level: INFO
