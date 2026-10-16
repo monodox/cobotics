@@ -2,8 +2,8 @@
 # Values here are overridden by environment variables (COBOTICS_*) and .env.
 
 ai:
-  backend: stub          # stub | openai | anthropic
-  model: gpt-4o-mini
+  backend: stub          # stub | openai | anthropic | nebius
+  model: gpt-4o-mini     # for the nebius backend, set an NVIDIA Nemotron model id
 
 hardware:
   backend: simulator     # simulator | real

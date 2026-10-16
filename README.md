@@ -3,11 +3,13 @@
 Interactive CLI for a **Physical AI Intelligence** system — reasoning over robots,
 sensors, and actuators, with a built-in simulator so it runs with no real hardware.
 
+Open source under the [MIT License](LICENSE).
+
 ## Features
 
 - Interactive hybrid shell: slash-commands (`/help`, `/status`, `/move`) **and** natural language.
 - Hardware abstraction layer (sensors / actuators) with a swappable simulator backend.
-- Pluggable AI backend (stub by default; OpenAI/Anthropic optional).
+- Pluggable AI backend (stub by default; **Nebius Token Factory / NVIDIA Nemotron**, OpenAI, and Anthropic optional).
 - Config- and env-driven via `pydantic-settings`.
 
 ## Install
@@ -22,6 +24,7 @@ pip install -e .
 Optional AI backends:
 
 ```bash
+pip install -e ".[nebius]"     # Nebius Token Factory + NVIDIA Nemotron
 pip install -e ".[openai]"
 pip install -e ".[anthropic]"
 pip install -e ".[dev]"        # tests
@@ -50,13 +53,49 @@ python -m cobotics
 Anything that is not a slash-command is treated as natural language and routed to
 the AI agent.
 
+## AI backends
+
+cobotics runs offline by default with a deterministic `stub` backend, so the
+shell and simulator work with no API key or network. Natural-language turns are
+routed to whichever backend is configured.
+
+### Nebius Token Factory (NVIDIA Nemotron)
+
+cobotics can drive its reasoning with an **NVIDIA Nemotron** open-source model
+served by **Nebius Token Factory**. Token Factory exposes an OpenAI-compatible
+chat completions API, so the `nebius` backend reaches it through the OpenAI SDK
+pointed at the Nebius base URL.
+
+```bash
+pip install -e ".[nebius]"
+```
+
+Set the following (via environment or `.env`):
+
+```bash
+COBOTICS_AI_BACKEND=nebius
+NEBIUS_API_KEY=your-token-factory-key
+COBOTICS_AI_MODEL=nvidia/Llama-3_3-Nemotron-Super-49B-v1   # an NVIDIA Nemotron model
+COBOTICS_NEBIUS_BASE_URL=https://api.studio.nebius.com/v1/ # default
+```
+
+Then launch the shell — natural-language input is answered by the Nemotron model
+with live sensor context injected by the perception pipeline. Adjust
+`COBOTICS_AI_MODEL` to whichever Nemotron model id Token Factory currently serves.
+
+### OpenAI / Anthropic
+
+Install the matching extra (`.[openai]` or `.[anthropic]`), set
+`COBOTICS_AI_BACKEND` to `openai` or `anthropic`, provide the matching API key
+(`OPENAI_API_KEY` / `ANTHROPIC_API_KEY`), and set `COBOTICS_AI_MODEL`.
+
 ## Layout
 
 ```
 src/cobotics/
 ├── cli/          interactive shell + commands + rendering
 ├── core/         agent, intent parsing, session state
-├── ai/           LLM backend interface + providers (stub/openai/anthropic)
+├── ai/           LLM backend interface + providers (stub/nebius/openai/anthropic)
 ├── hardware/     device/sensor/actuator abstractions + simulator
 ├── perception/   sensor data -> world state
 ├── control/      intents -> motion/commands

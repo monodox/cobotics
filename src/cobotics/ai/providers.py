@@ -1,10 +1,14 @@
-"""Concrete AI backends: stub (offline), OpenAI, Anthropic."""
+"""Concrete AI backends: stub (offline), OpenAI, Anthropic, Nebius."""
 
 from __future__ import annotations
 
 from cobotics.ai.base import LLMBackend, Message
 from cobotics.config.settings import Settings
 from cobotics.utils.errors import AIBackendError
+
+# Default NVIDIA Nemotron model served by Nebius Token Factory. Adjust to
+# whatever model id the inference endpoint currently serves.
+DEFAULT_NEBIUS_MODEL = "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
 
 
 class StubBackend(LLMBackend):
@@ -34,7 +38,7 @@ class StubBackend(LLMBackend):
         return (
             "[stub AI] I understood: "
             f"'{last_user}'. Configure a real backend "
-            "(COBOTICS_AI_BACKEND=openai|anthropic) for full reasoning."
+            "(COBOTICS_AI_BACKEND=nebius|openai|anthropic) for full reasoning."
         )
 
 
@@ -50,6 +54,42 @@ class OpenAIBackend(LLMBackend):
             raise AIBackendError("OPENAI_API_KEY is not set.")
         self._client = OpenAI(api_key=settings.openai_api_key)
         self._model = settings.ai_model
+
+    def complete(self, messages: list[Message]) -> str:  # pragma: no cover - network
+        resp = self._client.chat.completions.create(
+            model=self._model,
+            messages=[{"role": m.role, "content": m.content} for m in messages],
+        )
+        return resp.choices[0].message.content or ""
+
+
+class NebiusBackend(LLMBackend):
+    """Backend that calls Nebius Token Factory, serving NVIDIA Nemotron models.
+
+    Token Factory exposes an OpenAI-compatible chat completions API, so this
+    reuses the OpenAI SDK pointed at the Nebius base URL. The model id should be
+    an NVIDIA open-source Nemotron model (see DEFAULT_NEBIUS_MODEL).
+    """
+
+    def __init__(self, settings: Settings) -> None:
+        try:
+            from openai import OpenAI
+        except ImportError as exc:  # pragma: no cover - optional dep
+            raise AIBackendError(
+                "openai package not installed. Run: pip install -e '.[nebius]'"
+            ) from exc
+        if not settings.nebius_api_key:
+            raise AIBackendError("NEBIUS_API_KEY is not set.")
+        self._client = OpenAI(
+            api_key=settings.nebius_api_key,
+            base_url=settings.nebius_base_url,
+        )
+        # Fall back to a Nemotron model id if the generic default is still set.
+        self._model = (
+            settings.ai_model
+            if settings.ai_model and settings.ai_model != "gpt-4o-mini"
+            else DEFAULT_NEBIUS_MODEL
+        )
 
     def complete(self, messages: list[Message]) -> str:  # pragma: no cover - network
         resp = self._client.chat.completions.create(
@@ -97,4 +137,6 @@ def build_backend(settings: Settings) -> LLMBackend:
         return OpenAIBackend(settings)
     if backend == "anthropic":
         return AnthropicBackend(settings)
+    if backend == "nebius":
+        return NebiusBackend(settings)
     raise AIBackendError(f"Unknown AI backend: {settings.ai_backend!r}")

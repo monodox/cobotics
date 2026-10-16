@@ -34,8 +34,11 @@ class Settings(BaseSettings):
     )
 
     # AI
-    ai_backend: str = "stub"
+    ai_backend: str = "stub"              # stub | openai | anthropic | nebius
     ai_model: str = "gpt-4o-mini"
+
+    # Nebius Token Factory (OpenAI-compatible inference API serving NVIDIA models)
+    nebius_base_url: str = "https://api.studio.nebius.com/v1/"
 
     # Hardware
     hardware_backend: str = "simulator"
@@ -51,6 +54,7 @@ class Settings(BaseSettings):
     # Raw API keys (not prefixed, read directly from env)
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
     anthropic_api_key: str | None = Field(default=None, alias="ANTHROPIC_API_KEY")
+    nebius_api_key: str | None = Field(default=None, alias="NEBIUS_API_KEY")
 
 
 @lru_cache(maxsize=1)
