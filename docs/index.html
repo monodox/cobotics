@@ -5,7 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cobotics — Physical AI Intelligence CLI</title>
   <meta name="description" content="Cobotics is an interactive CLI for a Physical AI Intelligence system — reasoning over robots, sensors, and actuators, with a built-in simulator and an NVIDIA Nemotron backend served by Nebius Token Factory." />
+  <script>
+    // Apply the saved or OS-preferred theme before paint to avoid a flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem("cobotics-theme");
+        var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        var theme = saved || (prefersLight ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
   <style>
+    /* Dark theme (default) */
     :root {
       --bg: #0b1020;
       --bg-soft: #121a33;
@@ -16,16 +30,31 @@
       --accent-2: #6ea8fe;
       --border: #22305a;
       --code-bg: #0a0f1f;
+      --glow: #15224a;
       --radius: 14px;
+    }
+    /* Light theme */
+    [data-theme="light"] {
+      --bg: #f6f8fc;
+      --bg-soft: #eef2fa;
+      --panel: #ffffff;
+      --fg: #0f1730;
+      --muted: #566184;
+      --accent: #0f9e92;
+      --accent-2: #2f6fe0;
+      --border: #d5deef;
+      --code-bg: #0f1730;
+      --glow: #dbe6fb;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 70% -10%, #15224a 0%, var(--bg) 55%) no-repeat, var(--bg);
+      background: radial-gradient(1200px 600px at 70% -10%, var(--glow) 0%, var(--bg) 55%) no-repeat, var(--bg);
       color: var(--fg);
       line-height: 1.6;
+      transition: background-color .25s ease, color .25s ease;
     }
     a { color: var(--accent-2); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -85,12 +114,14 @@
 
     pre {
       background: var(--code-bg);
+      color: #e6ecff;                /* code block stays dark in both themes */
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px 18px;
       overflow-x: auto;
       font-size: .9rem;
     }
+    pre code { color: inherit; }
     code { font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; }
     p code, li code { background: var(--bg-soft); padding: 2px 6px; border-radius: 6px; font-size: .88em; }
 
@@ -120,9 +151,34 @@
 
     footer { padding: 40px 0 60px; color: var(--muted); font-size: .9rem; text-align: center; border-top: 1px solid var(--border); }
     footer a { color: var(--accent-2); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      font: inherit;
+      font-size: .9rem;
+      cursor: pointer;
+      color: var(--fg);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      transition: border-color .2s ease, background-color .25s ease, color .25s ease;
+    }
+    .theme-toggle:hover { border-color: var(--accent-2); }
+    .theme-toggle .icon { font-size: 1rem; line-height: 1; }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark and light mode">
+    <span class="icon" aria-hidden="true">🌙</span><span class="label">Dark</span>
+  </button>
   <div class="wrap">
     <header class="hero">
       <span class="badge">Physical AI Intelligence · open source</span>
@@ -259,5 +315,30 @@ COBOTICS_NEBIUS_BASE_URL=https://api.studio.nebius.com/v1/</code></pre>
       </p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById("themeToggle");
+      var icon = btn.querySelector(".icon");
+      var label = btn.querySelector(".label");
+
+      function render(theme) {
+        var light = theme === "light";
+        icon.textContent = light ? "☀️" : "🌙";
+        label.textContent = light ? "Light" : "Dark";
+        btn.setAttribute("aria-pressed", String(light));
+      }
+
+      render(root.getAttribute("data-theme") || "dark");
+
+      btn.addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+        root.setAttribute("data-theme", next);
+        try { localStorage.setItem("cobotics-theme", next); } catch (e) {}
+        render(next);
+      });
+    })();
+  </script>
 </body>
 </html>

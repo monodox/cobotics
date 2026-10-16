@@ -5,6 +5,8 @@ sensors, and actuators, with a built-in simulator so it runs with no real hardwa
 
 Open source under the [MIT License](LICENSE).
 
+Website: https://monodox.github.io/cobotics/
+
 ## Powered by NVIDIA + Nebius
 
 Cobotics is an embodied agent for the **Physical AI** space, and its intelligence
